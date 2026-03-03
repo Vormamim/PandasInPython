@@ -1,0 +1,34 @@
+[
+  {
+    "make": "Nissan",
+    "model": "Skyline GT-R",
+    "year": 1999,
+    "region": "JDM",
+    "horsepower": 280,
+    "notes": "Iconic R34 model, famous in tuning culture."
+  },
+  {
+    "make": "Toyota",
+    "model": "Supra",
+    "year": 1998,
+    "region": "JDM",
+    "horsepower": 276,
+    "notes": "MK4 Supra with 2JZ engine, highly modded."
+  },
+  {
+    "make": "Mazda",
+    "model": "RX-7",
+    "year": 1995,
+    "region": "JDM",
+    "horsepower": 255,
+    "notes": "FD3S with rotary engine, lightweight sports coupe."
+  },
+  {
+    "make": "Honda",
+    "model": "NSX",
+    "year": 1991,
+    "region": "JDM",
+    "horsepower": 270,
+    "notes": "Mid-engine V6 supercar designed with F1 input."
+  }
+]
