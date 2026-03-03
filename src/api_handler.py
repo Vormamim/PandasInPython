@@ -1,49 +1,42 @@
 """
 API Handler Module
-Simple functions to fetch JSON data from free APIs or load samples.
+Provides tiny helpers to demonstrate fetching and inspecting web APIs.
+This version uses a public sample API (JSONPlaceholder) and keeps logic
+simple so beginners can follow every step.
 """
 
-import json
 import requests
+import urllib3
 
-# Supported APIs for tutorials
-APIS = {
-    "openmeteo": {
-        "name": "Open-Meteo (Weather Data)",
-        "description": "Free weather data API - no authentication required",
-        "base_url": "https://api.open-meteo.com/v1",
-        "endpoints": {
-            "forecast": "/forecast"
-        }
-    }
-}
+# allow insecure SSL for environments with self-signed certs
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-    
-def fetch_weather(latitude, longitude, timezone="auto"):
+def check_api(url: str) -> bool:
+    """Perform a GET request to *url* and return True if the API responds.
+
+    Prints the status code so learners can verify connectivity.
     """
-    Fetch weather forecast data from Open-Meteo API.
+    try:
+        resp = requests.get(url, verify=False)
+        print(f"API status code: {resp.status_code}")
+        return resp.status_code == 200
+    except Exception as exc:
+        print(f"API check failed: {exc}")
+        return False
 
-    Args:
-        latitude (float): Location latitude
-        longitude (float): Location longitude
-        timezone (str): Timezone for data
 
-    Returns:
-        dict: Weather response
+def fetch_posts() -> list[dict]:
+    """Fetch a list of posts from a public test API.
+
+    Uses https://jsonplaceholder.typicode.com/posts which requires no
+    authentication and returns JSON suitable for a pandas DataFrame.
     """
-    url = f"{APIS['openmeteo']['base_url']}/forecast"
-    params = {
-        "latitude": latitude,
-        "longitude": longitude,
-        "hourly": "temperature_2m,relative_humidity_2m,precipitation",
-        "timezone": timezone,
-        "forecast_days": 7
-    }
-    response = requests.get(url, params=params)
-    response.raise_for_status()
-    return response.json()
+    url = "https://jsonplaceholder.typicode.com/posts"
+    resp = requests.get(url, verify=False)
+    resp.raise_for_status()
+    return resp.json()
     
-def display_raw_data(data, max_items=5):
+def display_raw_data(data, max_items=5) -> None:
     """Display raw API response in formatted way."""
     if not data:
         print("No data to display")
@@ -70,23 +63,21 @@ def display_raw_data(data, max_items=5):
             else:
                 print(f"  {key}: {value}")
     
-def list_available_apis():
-    """List the weather API as the only option."""
-    print("\n[INFO] Available API: Open-Meteo weather data")
+def list_available_apis() -> None:
+    """List the sample JSONPlaceholder API used in the tutorial."""
+    print("\n[INFO] Available API: JSONPlaceholder posts")
     print("-" * 60)
-    print("  https://api.open-meteo.com/v1/forecast")
+    print("  https://jsonplaceholder.typicode.com/posts")
 
 
 
-# Test function
+# Quick exercise when running this module directly
 if __name__ == "__main__":
-    # show available APIs
-    list_available_apis()
+    url = "https://jsonplaceholder.typicode.com/posts"
+    print("Checking sample API...")
+    ok = check_api(url)
+    print("API reachable?", ok)
 
-    print("\n" + "="*60)
-    print("Testing Open-Meteo Weather API")
-    print("="*60)
-
-    weather = fetch_weather(-33.8688, 151.2093)
-    if weather:
-        display_raw_data(weather, max_items=1)
+    print("Fetching posts...")
+    posts = fetch_posts()
+    display_raw_data(posts, max_items=2)
