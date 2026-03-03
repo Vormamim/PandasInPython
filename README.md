@@ -36,7 +36,7 @@ Convert the JSON response into a `DataFrame` for analysis.
 ### 3. Filter Data
 Use helper functions to subset rows by numeric thresholds or other conditions.
 
-### 4. Visualize
+### 4. Visualise
 Create simple plots (e.g. post ID vs user ID) using `matplotlib`.
 
 ### 5. Save/Load Sessions
